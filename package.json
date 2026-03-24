@@ -1,0 +1,8 @@
+{
+  "name": "ai-apprentice-platform-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "vercel-build": "cd frontend && npm install && npm run build && chmod -R 755 dist && cp -r dist ../"
+  }
+}
