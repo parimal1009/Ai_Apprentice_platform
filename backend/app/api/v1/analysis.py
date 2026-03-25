@@ -93,7 +93,8 @@ async def analyze_text(
         status="pending",
     )
     db.add(job)
-    await db.flush()
+    await db.commit()
+    await db.refresh(job)
 
     job_id = job.id
     background_tasks.add_task(run_analysis_pipeline, job_id, "text", data.input_text, None)
@@ -158,7 +159,8 @@ async def analyze_file(
         status="pending",
     )
     db.add(job)
-    await db.flush()
+    await db.commit()
+    await db.refresh(job)
 
     job_id = job.id
     background_tasks.add_task(run_analysis_pipeline, job_id, input_type, None, file_path)
