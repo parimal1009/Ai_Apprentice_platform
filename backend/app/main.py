@@ -58,6 +58,17 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={"detail": "Internal server error"},
     )
 
+from app.core.database import engine, Base
+@app.on_event("startup")
+async def startup_event():
+    try:
+        logger.info("Initializing database tables...")
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        logger.info("Database tables created successfully.")
+    except Exception as e:
+        logger.error(f"Failed to create database tables: {e}")
+
 
 @app.get("/api/v1/health")
 async def health_check():
